@@ -5,7 +5,7 @@ export default class CardService {
       if (!response.ok) {
         throw Error(response.statusText)
       }
-      return response.deck_id.json();
+      return response.json().deck_id;
     } catch(error) {
       return error.message;
     }
@@ -18,6 +18,18 @@ export default class CardService {
         throw Error(response.statusText)
       }
       return response.json();
+    } catch(error) {
+      return error.message;
+    }
+  }
+
+  static async shuffleDeck(deckId) {
+    try {
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/shuffle/`);
+      if (!response.ok) {
+        throw Error(response.statusText)
+      }
+      return response.json().shuffled;
     } catch(error) {
       return error.message;
     }
