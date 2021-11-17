@@ -1,7 +1,7 @@
 export default class CardService {
-  static async getCards() {
+  static async getCards(deckSize = "1") {
     try {
-      const response = await fetch(`http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`);
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${deckSize}`);
       if (!response.ok) {
         throw Error(response.statusText)
       }
