@@ -5,6 +5,8 @@ export default class Blackjack {
     this.deal();
     this.playerScore = 0;
     this.dealerScore = 0;
+    this.gameOver = false;
+    this.winner = "";
   }
 
   deal() {
@@ -67,7 +69,7 @@ export default class Blackjack {
     //Dealer score
     scoreSum = 0;
     aces = 0;
-    this.playerHand.forEach(function(card) {
+    this.dealerHand.forEach(function(card) {
       let cardValue;
       switch (card.value) {
         case 'KING':
@@ -104,11 +106,25 @@ export default class Blackjack {
     this.dealerScore = scoreSum;
   }  
 
-  playerTurn(hit) {
-    //TODO
+  playerHits() {
+    this.drawCard(this.playerHand);    
+    if (this.playerScore > 21) {
+      this.gameOver = true;
+      this.winner = "dealer";
+    }
   }
 
-  dealerTurn() {
-    //TODO
+  playerStands() {
+    while (this.dealerScore < 17) {
+      this.drawCard(this.dealerHand);
+    }
+    this.gameOver = true;
+    if (this.dealerScore > 21 || this.playerScore > this.dealerScore) {
+      this.winner = "player";
+    } else if (this.playerScore < this.dealerScore) {
+      this.winner = "dealer";
+    } else {
+      this.winner = "push";
+    }
   }
 }
