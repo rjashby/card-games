@@ -1,35 +1,43 @@
+let data;
+
 export default class CardService {
+  constructor() {
+    this.deckId;
+  }
+
   static async getCards(deckSize = "1") {
     try {
       const response = await fetch(`http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${deckSize}`);
       if (!response.ok) {
-        throw Error(response.statusText)
+        throw Error(response.statusText);
       }
-      return response.json().deck_id;
+      data = await response.json();
+      // console.log(data);
+      data = data.deck_id;
     } catch(error) {
       return error.message;
     }
   }
 
-  static async drawCard(deckId, num) {
+  static async drawCard(num) {
     try {
-      const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${num}`);
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/${data}/draw/?count=${num}`);
       if (!response.ok) {
-        throw Error(response.statusText)
+        throw Error(response.statusText);
       }
-      return response.json();
+      return await response.json();
     } catch(error) {
       return error.message;
     }
   }
 
-  static async shuffleDeck(deckId) {
+  static async shuffleDeck() {
     try {
-      const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/shuffle/`);
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/${data}/shuffle/`);
       if (!response.ok) {
-        throw Error(response.statusText)
+        throw Error(response.statusText);
       }
-      return response.json().shuffled;
+      return await response.json().shuffled;
     } catch(error) {
       return error.message;
     }

@@ -1,7 +1,7 @@
 import CardService from "./card-service";
 export default class Blackjack {
-  constructor() {
-    this.deckId = CardService.getCards(6);
+  constructor() {   
+    CardService.getCards(6);
     this.deal();
     this.playerScore = 0;
     this.dealerScore = 0;
@@ -9,17 +9,26 @@ export default class Blackjack {
     this.winner = "";
   }
 
+  // async init() {
+  //   const newDeckPromise = CardService.getCards(6);
+  //   return newDeckPromise.then(function(id) {
+  //     return id;
+  //   });    
+  // }
+
   deal() {
+    // this.init();
+    // console.log(this.deck_id);
     this.playerHand = [];
     this.dealerHand = [];
-    this.drawCard(playerHand);
-    this.drawCard(dealerHand);
-    this.drawCard(playerHand);
-    this.drawCard(dealerHand);
+    this.drawCard(this.playerHand);
+    this.drawCard(this.dealerHand);
+    this.drawCard(this.playerHand);
+    this.drawCard(this.dealerHand);
   }
 
   drawCard(hand) {
-    let response = CardService.drawCard(this.deckId, 1);
+    let response = CardService.drawCard(1);
     hand.push(response.cards[0]);
     if (parseInt(response.remaining) < 15) {
       CardService.shuffleDeck(this.deckId);
@@ -34,25 +43,25 @@ export default class Blackjack {
     this.playerHand.forEach(function(card) {
       let cardValue;
       switch (card.value) {
-        case 'KING':
-        case 'QUEEN':
-        case 'JACK':
-        case '10':
-          cardValue = 10;
-          break;
-        case '9':
-        case '8':
-        case '7':
-        case '6':
-        case '5':
-        case '4':
-        case '3':
-        case '2':
-          cardValue = parseInt(card.value);
-          break;
-        case 'ACE':
-          aces++;
-          break;
+      case 'KING':
+      case 'QUEEN':
+      case 'JACK':
+      case '10':
+        cardValue = 10;
+        break;
+      case '9':
+      case '8':
+      case '7':
+      case '6':
+      case '5':
+      case '4':
+      case '3':
+      case '2':
+        cardValue = parseInt(card.value);
+        break;
+      case 'ACE':
+        aces++;
+        break;
       }
       scoreSum += cardValue;
     });
@@ -72,25 +81,25 @@ export default class Blackjack {
     this.dealerHand.forEach(function(card) {
       let cardValue;
       switch (card.value) {
-        case 'KING':
-        case 'QUEEN':
-        case 'JACK':
-        case '10':
-          cardValue = 10;
-          break;
-        case '9':
-        case '8':
-        case '7':
-        case '6':
-        case '5':
-        case '4':
-        case '3':
-        case '2':
-          cardValue = parseInt(card.value);
-          break;
-        case 'ACE':
-          aces++;
-          break;
+      case 'KING':
+      case 'QUEEN':
+      case 'JACK':
+      case '10':
+        cardValue = 10;
+        break;
+      case '9':
+      case '8':
+      case '7':
+      case '6':
+      case '5':
+      case '4':
+      case '3':
+      case '2':
+        cardValue = parseInt(card.value);
+        break;
+      case 'ACE':
+        aces++;
+        break;
       }
       scoreSum += cardValue;
     });

@@ -4,9 +4,24 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Black Jack</title>
 </head>
 <body>
-  
+  <div class="container">
+    <h1>Play Blackjack!</h1>
+    <div class="row">
+      <div class="col-md-6"></div>
+        <div class="card" id="playerHand"></div>
+        <div class="card" id="playerScore"></div>
+          <p>some stuff</p>
+      <div class="col-md-6"></div>
+        <div class="card" id="dealerHand"></div>
+        <div class="card" id="dealerScore"></div>
+          <p>some stuff</p>
+    </div>
+    <button class="btn-success" id="playerHit">Player Hit</button>
+    <button class="btn-danger" id="playerStand">Player Stand</button>
+  </div>
+  <div id="output"></div>
 </body>
 </html>
