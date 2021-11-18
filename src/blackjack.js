@@ -2,12 +2,7 @@ import CardService from "./card-service";
 export default class Blackjack {
   constructor(deckId) {   
     this.deckId = deckId;
-    this.playerScore = 0;
-    this.dealerScore = 0;
-    this.gameOver = false;
-    this.winner = "";
-    this.playerHand = [];
-    this.dealerHand = [];
+    this.chips = 100;
   }
 
   static build() {
@@ -17,6 +12,13 @@ export default class Blackjack {
   }
 
   async deal() {
+    this.playerScore = 0;
+    this.dealerScore = 0;
+    this.gameOver = false;
+    this.winner = "";
+    this.playerHand = [];
+    this.dealerHand = [];
+    this.currentBet = 0;
     await this.drawCard(this.playerHand);
     await this.drawCard(this.dealerHand);
     await this.drawCard(this.playerHand);
@@ -25,13 +27,13 @@ export default class Blackjack {
 
   async drawCard(hand) {
     let response = CardService.drawCard(this.deckId, 1);
-    return await response.then((serverResponse) => {
+    return await response.then(async (serverResponse) => {
       hand.push(serverResponse.cards[0]);
+      if (parseInt(response.remaining) < 15) {
+        await CardService.shuffleDeck(this.deckId);
+      }
       this.updateScores();
     });
-    /* if (parseInt(response.remaining) < 15) {
-      CardService.shuffleDeck(this.deckId);
-    } */
   }
 
   updateScores() {
@@ -133,12 +135,31 @@ export default class Blackjack {
       this.gameOver = true;
       if (this.dealerScore > 21 || this.playerScore > this.dealerScore) {
         this.winner = "player";
+        if (this.playerScore === 21 && this.playerHand.length === 2) {
+          this.chips += this.currentBet * 2.5;
+        } else {
+          this.chips += this.currentBet * 2;
+        }
       } else if (this.playerScore < this.dealerScore) {
         this.winner = "dealer";
       } else {
         this.winner = "push";
+        this.chips += this.currentBet;
       }
       resolve();
     });
+  }
+
+  async doubleDown() {
+    this.initialBet(this.currentBet);
+    await this.playerHits();
+    if (!this.gameOver) {
+      await this.playerStands();
+    }
+  }
+
+  initialBet(betAmount) {
+    this.chips -= betAmount;
+    this.currentBet += betAmount;
   }
 }

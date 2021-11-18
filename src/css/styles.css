@@ -7,3 +7,12 @@ img {
   height: auto;
   display: inline;
 }
+
+#playButtons {
+  display:none;
+}
+
+#output {
+  font-size: larger;
+  font-weight: bold;
+}

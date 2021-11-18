@@ -8,12 +8,39 @@ import CardBack from './assets/images/dealer-card.jpg';
 let blackjack1;
 getBlackjack();
 
+$('#bet1').click(async function() {
+  await blackjack1.deal();
+  $("#betButtons").hide();
+  blackjack1.initialBet(1);
+  showHands();
+});
+
+$('#bet5').click(async function() {
+  await blackjack1.deal();
+  $("#betButtons").hide();
+  blackjack1.initialBet(5);
+  showHands();
+});
+
+$('#bet10').click(async function() {
+  await blackjack1.deal();
+  $("#betButtons").hide();
+  blackjack1.initialBet(10);
+  showHands();
+});
+
 $("#newGame").click(function(){
   location.reload();
 });  
 
 $('#playerHit').click(function() {
   blackjack1.playerHits().then(() => {
+    showHands();
+  });
+});
+
+$('#doubleDown').click(function() {
+  blackjack1.doubleDown().then(() => {
     showHands();
   });
 });
@@ -38,10 +65,22 @@ function showHands() {
       dealerHandStr = dealerHandStr.concat(`<img src="${blackjack1.dealerHand[i].image}">`);
     }
   }
+  if (blackjack1.gameOver) {
+    $('#betButtons').show();
+    $('#playButtons').hide();
+  } else {
+    $('#playButtons').show();
+    $('#betButtons').hide();
+  }
+  if (blackjack1.playerHand.length == 2 && (blackjack1.playerScore >= 9 && blackjack1.playerScore <= 11)) {
+    $('#doubleDown').prop("disabled", false);
+  } else {
+    $('#doubleDown').prop("disabled", true);
+  }
   $('#dealerHand').html(dealerHandStr);
-  $('#output').html(blackjack1.winner);
-  $('#playerScore').html(blackjack1.playerScore);
-  $('#dealerScore').html(blackjack1.dealerScore);
+  $('#output').html("Winner: " + blackjack1.winner);
+  $('#bet').html(blackjack1.currentBet);
+  $('#chipCount').html(blackjack1.chips);
 }
 
 async function getBlackjack() {
@@ -50,9 +89,7 @@ async function getBlackjack() {
   await blackjackPromise.then(function(blackjackObj) {
     newBlackjack = blackjackObj;
   });
-  blackjack1 = newBlackjack;
-  blackjack1.deal().then(() => {
-    blackjack1.updateScores();
-    showHands();
+  return newBlackjack.deal().then(() => {    
+    blackjack1 = newBlackjack;
   });
 }
