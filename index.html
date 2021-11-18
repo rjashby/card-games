@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Jack</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Play Blackjack!</h1>
+    <div class="row">
+      <div class="col-md-6"></div>
+        <h4>Player Hand</h4>
+        <div class="cards" id="playerHand"></div>
+        <!-- <h4>Player Score</h4>
+        <div class="cards" id="playerScore"></div> -->
+      <hr>
+      <div class="col-md-6"></div>
+        <h4>Dealer Hand</h4>
+        <div class="cards" id="dealerHand"></div>
+        <!-- <h4>Dealer Score</h4>
+        <div class="cards" id="dealerScore"></div> -->
+    </div>
+    <hr>
+    <div id="betButtons">
+      <button class="btn btn-light" id="bet1">Bet $1</button>
+      <button class="btn btn-light" id="bet5">Bet $5</button>
+      <button class="btn btn-light" id="bet10">Bet $10</button>
+    </div>
+    <hr>
+    <div id="playButtons">
+      <button class="btn btn-success" id="newGame">New Dealer</button>
+      <button class="btn btn-info" id="playerHit">Player Hit</button>
+      <button class="btn btn-warning" id="doubleDown">Double Down</button>
+      <button class="btn btn-danger" id="playerStand">Player Stand</button>
+    </div>
+    <div>Bet amount: $<span id="bet"></span></span></div>
+    <div>Total chips: $<span id="chipCount"></span></span></div>
+    <div id="output"></div>
+  </div>
+<script defer src="bundle.js"></script></body>
+</html> 
