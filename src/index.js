@@ -4,12 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Blackjack from './blackjack.js';
 
-let blackjack1 = new Blackjack();
-showHands();
+let blackjack1;
+getBlackjack();
 
 $('#playerHit').click(function() {
-  blackjack1.playerHits();
-  showHands();
+  blackjack1.playerHits().then(() => {
+    showHands();
+  });
 });
 
 $('#playerStand').click(function() {
@@ -19,10 +20,31 @@ $('#playerStand').click(function() {
 
 function showHands() {
   // console.log(blackjack1);
-  $('#playerHand').html(blackjack1.playerHand);
-  $('#dealerHand').html(blackjack1.dealerHand);
+  let playerHandStr = "";
+  blackjack1.playerHand.forEach((card) => {
+    playerHandStr = playerHandStr.concat(" " + card.value);
+  });
+  $('#playerHand').html(playerHandStr);
+  let dealerHandStr = "";
+  blackjack1.dealerHand.forEach((card) => {
+    dealerHandStr = dealerHandStr.concat(" " + card.value);
+  });
+  $('#dealerHand').html(dealerHandStr);
   $('#output').html(blackjack1.winner);
   $('#playerScore').html(blackjack1.playerScore);
   $('#dealerScore').html(blackjack1.dealerScore);
 }
 
+async function getBlackjack() {
+  let blackjackPromise = Blackjack.build();
+  let newBlackjack;
+  await blackjackPromise.then(function(blackjackObj) {
+    newBlackjack = blackjackObj;
+  });
+  blackjack1 = newBlackjack;
+  //Might not be entirely correct
+  blackjack1.deal().then(() => {
+    blackjack1.updateScores();
+    showHands();
+  });
+}

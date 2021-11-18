@@ -1,39 +1,37 @@
 import CardService from "./card-service";
 export default class Blackjack {
-  constructor() {   
-    CardService.getCards(6);
-    this.deal();
+  constructor(deckId) {   
+    this.deckId = deckId;
     this.playerScore = 0;
     this.dealerScore = 0;
     this.gameOver = false;
     this.winner = "";
-  }
-
-  // async init() {
-  //   const newDeckPromise = CardService.getCards(6);
-  //   return newDeckPromise.then(function(id) {
-  //     return id;
-  //   });    
-  // }
-
-  deal() {
-    // this.init();
-    // console.log(this.deck_id);
     this.playerHand = [];
     this.dealerHand = [];
-    this.drawCard(this.playerHand);
-    this.drawCard(this.dealerHand);
-    this.drawCard(this.playerHand);
-    this.drawCard(this.dealerHand);
   }
 
-  drawCard(hand) {
-    let response = CardService.drawCard(1);
-    hand.push(response.cards[0]);
-    if (parseInt(response.remaining) < 15) {
+  static build() {
+    return CardService.getCards(6).then(function(response) {
+      return new Blackjack(response.deck_id);
+    });
+  }
+
+  async deal() {
+    await this.drawCard(this.playerHand);
+    await this.drawCard(this.dealerHand);
+    await this.drawCard(this.playerHand);
+    return await this.drawCard(this.dealerHand);
+  }
+
+  async drawCard(hand) {
+    let response = CardService.drawCard(this.deckId, 1);
+    return await response.then((serverResponse) => {
+      hand.push(serverResponse.cards[0]);
+      this.updateScores();
+    });
+    /* if (parseInt(response.remaining) < 15) {
       CardService.shuffleDeck(this.deckId);
-    }
-    this.updateScores();
+    } */
   }
 
   updateScores() {
@@ -41,7 +39,7 @@ export default class Blackjack {
     let scoreSum = 0;
     let aces = 0;
     this.playerHand.forEach(function(card) {
-      let cardValue;
+      let cardValue = 0;
       switch (card.value) {
       case 'KING':
       case 'QUEEN':
@@ -65,12 +63,15 @@ export default class Blackjack {
       }
       scoreSum += cardValue;
     });
+    console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
     if (aces > 0) {
-      for (let i = 0; i <= aces; i++) {
+      for (let i = 0; i < aces; i++) {
         if (scoreSum > 10) {
           scoreSum += 1;
+          console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
         } else {
           scoreSum += 11;
+          console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
         }
       }      
     }
@@ -79,7 +80,7 @@ export default class Blackjack {
     scoreSum = 0;
     aces = 0;
     this.dealerHand.forEach(function(card) {
-      let cardValue;
+      let cardValue = 0;
       switch (card.value) {
       case 'KING':
       case 'QUEEN':
@@ -104,7 +105,7 @@ export default class Blackjack {
       scoreSum += cardValue;
     });
     if (aces > 0) {
-      for (let i = 0; i <= aces; i++) {
+      for (let i = 0; i < aces; i++) {
         if (scoreSum > 10) {
           scoreSum += 1;
         } else {
@@ -115,14 +116,19 @@ export default class Blackjack {
     this.dealerScore = scoreSum;
   }  
 
-  playerHits() {
-    this.drawCard(this.playerHand);    
-    if (this.playerScore > 21) {
-      this.gameOver = true;
-      this.winner = "dealer";
+  async playerHits() {
+    if (!this.gameOver) {
+      return this.drawCard(this.playerHand)
+        .then(() => {
+          if (this.playerScore > 21) {
+            this.gameOver = true;
+            this.winner = "dealer";
+          }        
+      });
     }
   }
 
+  //TODO: make async
   playerStands() {
     while (this.dealerScore < 17) {
       this.drawCard(this.dealerHand);

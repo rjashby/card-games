@@ -1,27 +1,20 @@
-let data;
-
 export default class CardService {
-  constructor() {
-    this.deckId;
-  }
-
   static async getCards(deckSize = "1") {
     try {
       const response = await fetch(`http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${deckSize}`);
       if (!response.ok) {
         throw Error(response.statusText);
       }
-      data = await response.json();
-      // console.log(data);
-      data = data.deck_id;
+      const data = await response.json();
+      return data;
     } catch(error) {
       return error.message;
     }
   }
 
-  static async drawCard(num) {
+  static async drawCard(deckId, num) {
     try {
-      const response = await fetch(`http://deckofcardsapi.com/api/deck/${data}/draw/?count=${num}`);
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${num}`);
       if (!response.ok) {
         throw Error(response.statusText);
       }
@@ -31,9 +24,9 @@ export default class CardService {
     }
   }
 
-  static async shuffleDeck() {
+  static async shuffleDeck(deckId) {
     try {
-      const response = await fetch(`http://deckofcardsapi.com/api/deck/${data}/shuffle/`);
+      const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/shuffle/`);
       if (!response.ok) {
         throw Error(response.statusText);
       }
