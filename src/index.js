@@ -24,8 +24,6 @@ $('#playerStand').click(function() {
   });
 });
 
-//<img src="/src/assets/images/dealer-card.jpg"></img>
-
 function showHands() {
   let playerHandStr = "";
   blackjack1.playerHand.forEach((card) => {
