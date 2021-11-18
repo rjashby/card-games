@@ -63,15 +63,12 @@ export default class Blackjack {
       }
       scoreSum += cardValue;
     });
-    console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
     if (aces > 0) {
       for (let i = 0; i < aces; i++) {
         if (scoreSum > 10) {
           scoreSum += 1;
-          console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
         } else {
           scoreSum += 11;
-          console.log(`Aces: ${aces}, scoreSum: ${scoreSum}`);
         }
       }      
     }
@@ -124,22 +121,24 @@ export default class Blackjack {
             this.gameOver = true;
             this.winner = "dealer";
           }        
-      });
+        });
     }
   }
 
-  //TODO: make async
-  playerStands() {
+  async playerStands() {
     while (this.dealerScore < 17) {
-      this.drawCard(this.dealerHand);
+      await this.drawCard(this.dealerHand);
     }
-    this.gameOver = true;
-    if (this.dealerScore > 21 || this.playerScore > this.dealerScore) {
-      this.winner = "player";
-    } else if (this.playerScore < this.dealerScore) {
-      this.winner = "dealer";
-    } else {
-      this.winner = "push";
-    }
+    return new Promise((resolve) => {
+      this.gameOver = true;
+      if (this.dealerScore > 21 || this.playerScore > this.dealerScore) {
+        this.winner = "player";
+      } else if (this.playerScore < this.dealerScore) {
+        this.winner = "dealer";
+      } else {
+        this.winner = "push";
+      }
+      resolve();
+    });
   }
 }

@@ -15,7 +15,7 @@ export default class CardService {
   static async drawCard(deckId, num) {
     try {
       const response = await fetch(`http://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${num}`);
-      if (!response.ok) {
+      if (!response.ok) { 
         throw Error(response.statusText);
       }
       return await response.json();
