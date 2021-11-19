@@ -4,6 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import Blackjack from './blackjack.js';
 import CardBack from './assets/images/dealer-card.jpg';
+import Table from "./assets/images/table.jpg";
+
+$(".container").prepend(`<img src='${Table}'>`);
 
 let blackjack1;
 getBlackjack();
@@ -54,15 +57,15 @@ $('#playerStand').click(function() {
 function showHands() {
   let playerHandStr = "";
   blackjack1.playerHand.forEach((card) => {
-    playerHandStr = playerHandStr.concat(`<img src="${card.image}">`);
+    playerHandStr = playerHandStr.concat(`<img class='cardImg' src="${card.image}">`);
   });
   $('#playerHand').html(playerHandStr);
   let dealerHandStr = "";
   for (let i = 0; i < blackjack1.dealerHand.length; i++) {
     if (blackjack1.gameOver === false && i === 0) {
-      dealerHandStr += `<img src='${CardBack}'>`;
+      dealerHandStr += `<img class='cardImg' src='${CardBack}'>`;
     } else {
-      dealerHandStr = dealerHandStr.concat(`<img src="${blackjack1.dealerHand[i].image}">`);
+      dealerHandStr = dealerHandStr.concat(`<img class='cardImg' src="${blackjack1.dealerHand[i].image}">`);
     }
   }
   if (blackjack1.gameOver) {

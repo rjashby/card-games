@@ -2,7 +2,7 @@ body {
   background-color: green;
 }
 
-img {
+.cardImg {
   width: 150px;
   height: auto;
   display: inline;
@@ -19,4 +19,8 @@ img {
 
 #playerStats {
   font-size: larger;
+}
+
+#header {
+
 }
