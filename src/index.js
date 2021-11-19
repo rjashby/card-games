@@ -16,12 +16,20 @@ $('#bet1').click(async function() {
   $("#betButtons").hide();
   blackjack1.initialBet(1);
   showHands();
+  $("html, body").animate({
+    scrollTop: $(
+      'html, body').get(0).scrollHeight
+  }, 10);
 });
 
 $('#bet5').click(async function() {
   await blackjack1.deal();
   $("#betButtons").hide();
   blackjack1.initialBet(5);
+  $("html, body").animate({
+    scrollTop: $(
+      'html, body').get(0).scrollHeight
+  }, 10);
   showHands();
 });
 
@@ -29,6 +37,10 @@ $('#bet10').click(async function() {
   await blackjack1.deal();
   $("#betButtons").hide();
   blackjack1.initialBet(10);
+  $("html, body").animate({
+    scrollTop: $(
+      'html, body').get(0).scrollHeight
+  }, 10);
   showHands();
 });
 
