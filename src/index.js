@@ -12,6 +12,8 @@ let blackjack1;
 getBlackjack();
 
 $('#bet1').click(async function() {
+  $("#pHand").show();
+  $("#dHand").show();
   await blackjack1.deal();
   $("#betButtons").hide();
   blackjack1.initialBet(1);
@@ -23,6 +25,8 @@ $('#bet1').click(async function() {
 });
 
 $('#bet5').click(async function() {
+  $("#pHand").show();
+  $("#dHand").show();
   await blackjack1.deal();
   $("#betButtons").hide();
   blackjack1.initialBet(5);
@@ -34,6 +38,8 @@ $('#bet5').click(async function() {
 });
 
 $('#bet10').click(async function() {
+  $("#pHand").show();
+  $("#dHand").show();
   await blackjack1.deal();
   $("#betButtons").hide();
   blackjack1.initialBet(10);

@@ -6,6 +6,8 @@ body {
   width: 150px;
   height: auto;
   display: inline;
+  animation-timing-function:cubic-bezier(1,.01,.98,.47);
+  transition-delay: 100000ms;
 }
 
 #playButtons {
@@ -19,4 +21,12 @@ body {
 
 #playerStats {
   font-size: larger;
+}
+
+#pHand {
+  display: none;
+}
+
+#dHand {
+  display: none;
 }
